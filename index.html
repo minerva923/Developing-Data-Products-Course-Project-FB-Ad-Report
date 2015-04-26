@@ -1,1 +1,174 @@
-default
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Developing Data Products Course Project</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Developing Data Products Course Project">
+  <meta name="author" content="">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Developing Data Products Course Project</h1>
+    <h2>Facebook Ad Report</h2>
+    <p><br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Goal</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Nowadays, social campaigns are important to digital marketers. 
+Aiming to save lots of times from day by day pivot table, 
+this app helps us to quickly identify common metrics on Facebook 
+advertising campaigns. </p>
+
+<p>Please noticed that all data have been preprocessed to protect client privacy.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>DataTable &amp; Widgets</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>DataTable is chosen over other charts because it&#39;s easy to sort and copy the needed data. 
+There are two sections which are performance and ROI. In the performance section,
+one can see common metrics such as impressions, clicks, likes, and so on. In addition,
+the dataset is able to group by variables from campaigns to date. </p>
+
+<p>Widgets in the sidebar panel is apply to performance only, because information 
+in ROI itself is sufficient in my experience. Through the checkboxs, one is able 
+to dicide which variables he/she would like to show, which is convenient when you 
+just want to observe few.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Data processing - I</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Package <em>dplyr</em> is heavily used in the app. It does a great help to group, summarize data, and create new variables. For instance, following codes let me group a variable, average wanted variables, and create new variable based on variable just created:</p>
+
+<pre><code class="r">suppressPackageStartupMessages(library(dplyr))
+dt &lt;- tbl_df(mtcars) %&gt;% 
+            group_by(cyl) %&gt;%
+            summarise(mpg=mean(mpg), wt=mean(wt)) %&gt;%
+            mutate(v1 = &quot;test&quot;, v2=wt^2)
+dt
+</code></pre>
+
+<pre><code>## Source: local data frame [3 x 5]
+## 
+##   cyl      mpg       wt   v1        v2
+## 1   4 26.66364 2.285727 test  5.224549
+## 2   6 19.74286 3.117143 test  9.716580
+## 3   8 15.10000 3.999214 test 15.993715
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Data processing - II</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Besides <em>dplyr</em>, <em>grep</em> also helps a lot, since one can create useful variables to measure more indexes which won&#39;t know via regular report. For example:</p>
+
+<pre><code class="r">        color &lt;- vector(&quot;character&quot;, length(dt[dt$cyl]))
+        color[grep(&#39;4&#39;, dt$cyl)] &lt;- &quot;Red&quot;
+        color[grep(&#39;6&#39;, dt$cyl)] &lt;- &quot;Navy&quot;
+        color[color==&quot;&quot;] &lt;- &quot;Black&quot;
+        dt &lt;- cbind(dt, color)
+        dt
+</code></pre>
+
+<pre><code>##   cyl      mpg       wt   v1        v2 color
+## 1   4 26.66364 2.285727 test  5.224549   Red
+## 2   6 19.74286 3.117143 test  9.716580  Navy
+## 3   8 15.10000 3.999214 test 15.993715 Black
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Goal'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='DataTable &amp; Widgets'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Data processing - I'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Data processing - II'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
